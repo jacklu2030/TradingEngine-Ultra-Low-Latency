@@ -1,0 +1,4 @@
+
+make
+./main.exe
+
