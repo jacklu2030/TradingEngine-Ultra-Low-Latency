@@ -13,7 +13,7 @@
  */
 
 template <typename T>
-lmax_style_ring_buffer<T>::lmax_style_ring_buffer(size_t _size) : m_size(_size) { m_data = new T[m_size]; }  // , m_data(new T[_size])
+lmax_style_ring_buffer<T>::lmax_style_ring_buffer(size_t _size) : m_size(_size) { m_data = new T[m_size]; }  
 
 template <typename T>
 lmax_style_ring_buffer<T>::~lmax_style_ring_buffer() { delete [] m_data; }
@@ -21,8 +21,7 @@ lmax_style_ring_buffer<T>::~lmax_style_ring_buffer() { delete [] m_data; }
 template <typename T>
 bool lmax_style_ring_buffer<T>::try_enqueue( const T& value ) {
     const uint64_t head = m_head_2.load( std::memory_order_relaxed );
-    int tail = m_tail_1.load( std::memory_order_relaxed );       // Jack's choice
-    //uint64_t tail = m_tail_1.load( std::memory_order_relaxed );   // original
+    int tail = m_tail_1.load( std::memory_order_relaxed );     
     const std::uint64_t count = tail - head;
 
     if( count >= m_size )
@@ -53,8 +52,7 @@ template <typename T>
 bool lmax_style_ring_buffer<T>::try_dequeue( T& out )
 {
     const uint64_t tail = m_tail_2.load( std::memory_order_relaxed );
-    //uint64_t head = m_head_1.load( std::memory_order_relaxed );           // original design
-    int head = m_head_1.load( std::memory_order_relaxed );              // Jack's choice
+    int head = m_head_1.load( std::memory_order_relaxed );  
 
     if( head >= tail )
     {
